@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Influencer Platform Competitor Analysis for GCC</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: "Eclipse" - A modern dark theme with deep charcoal, slate gray, and subtle electric blue accents for a professional, tech-focused feel. -->
+    <!-- Application Structure Plan: A single-page dashboard with a fixed top navigation for smooth scrolling between thematic sections: 1) Market Overview, 2) Competitor Deep Dive, 3) GCC Gap Analysis, and 4) The Blueprint. This structure transforms the linear report into an explorable, non-linear experience. The user can immediately jump to the most relevant section. The "Competitor Deep Dive" is the interactive core, allowing users to filter and compare platforms, directly addressing the primary task of analysis. This design prioritizes usability and efficient data synthesis over simply replicating the report's layout. -->
+    <!-- Visualization & Content Choices: 
+        - Market Size Chart (Bar Chart, Chart.js): Goal is to highlight the discrepancy in market valuations. A bar chart is the clearest way to compare these distinct figures. Interaction: Tooltips on hover provide source context.
+        - Market Share Chart (Doughnut Chart, Chart.js): Goal is to show regional proportions. A doughnut chart is visually engaging for part-to-whole relationships. Interaction: Hover to see percentages.
+        - Competitor Data (Interactive Cards + Table, JS/HTML): Goal is to allow detailed comparison. Cards provide a quick overview, while filtering allows users to narrow down the dataset based on specific criteria (funding, AI, region). This is more dynamic and user-driven than a static table.
+        - Gap Analysis (Styled Matrix, HTML/Tailwind): Goal is to clearly present the core "problem vs. opportunity" argument. A visually structured matrix with icons makes the information highly scannable and impactful.
+        - Blueprint (Flexbox Diagram, HTML/Tailwind): Goal is to visualize the proposed platform's features. A diagrammatic layout is more engaging and easier to understand than a bulleted list.
+        - All choices are made to enhance understanding and interaction within the designed dashboard structure.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827;
+            color: #D1D5DB;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .glass-effect {
+            background: rgba(31, 41, 55, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #60A5FA;
+            border-bottom-color: #60A5FA;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(96, 165, 250, 0.1), 0 4px 6px -2px rgba(96, 165, 250, 0.05);
+        }
+        .btn {
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="glass-effect sticky top-0 z-50">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span class="font-bold text-xl text-white">GCC Influencer Platform Analysis</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#market" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-300 border-b-2 border-transparent">Market Overview</a>
+                        <a href="#competitors" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-300 border-b-2 border-transparent">Competitors</a>
+                        <a href="#gap-analysis" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-300 border-b-2 border-transparent">GCC Gap Analysis</a>
+                        <a href="#blueprint" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-300 border-b-2 border-transparent">The Blueprint</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main id="main-content" class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <section id="market" class="py-12">
+            <h1 class="text-4xl font-bold text-center text-white mb-4">Global Market Dynamics</h1>
+            <p class="text-center max-w-3xl mx-auto text-gray-400 mb-12">
+                The global influencer marketing platform market is in a state of rapid, fragmented growth. Analysis reveals significant discrepancies in valuation, highlighting a lack of standardization and a massive opportunity for platforms that can provide clear, measurable ROI.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                <div class="stat-card glass-effect p-6 rounded-lg text-center transition-transform duration-300">
+                    <h3 class="text-4xl font-bold text-blue-400">$8.9B - $25.4B</h3>
+                    <p class="text-gray-400 mt-2">2024 Market Size Range</p>
+                    <p class="text-xs text-gray-500 mt-1">Source: Multiple market reports [2, 5]</p>
+                </div>
+                <div class="stat-card glass-effect p-6 rounded-lg text-center transition-transform duration-300">
+                    <h3 class="text-4xl font-bold text-blue-400">17% - 33%</h3>
+                    <p class="text-gray-400 mt-2">Projected CAGR Range</p>
+                     <p class="text-xs text-gray-500 mt-1">Source: Multiple market reports [1, 2, 5]</p>
+                </div>
+                <div class="stat-card glass-effect p-6 rounded-lg text-center transition-transform duration-300">
+                    <h3 class="text-4xl font-bold text-blue-400">$95.69M</h3>
+                    <p class="text-gray-400 mt-2">Projected Saudi Ad Spend by 2025</p>
+                    <p class="text-xs text-gray-500 mt-1">Source: Statista [44]</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="glass-effect p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-white mb-4 text-center">Market Size Projections (2024, USD Billions)</h3>
+                    <p class="text-xs text-gray-500 text-center mb-4">This chart illustrates the significant variance in market valuation, a key indicator of industry fragmentation.</p>
+                    <div class="chart-container h-[350px]">
+                        <canvas id="marketSizeChart"></canvas>
+                    </div>
+                </div>
+                <div class="glass-effect p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-white mb-4 text-center">Regional Market Share (2024)</h3>
+                     <p class="text-xs text-gray-500 text-center mb-4">North America currently dominates the market, highlighting the opportunity in underserved regions like the GCC.</p>
+                    <div class="chart-container h-[350px]">
+                        <canvas id="marketShareChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="border-gray-700 my-16">
+
+        <section id="competitors" class="py-12">
+            <h2 class="text-3xl font-bold text-center text-white mb-4">Competitor Deep Dive</h2>
+            <p class="text-center max-w-3xl mx-auto text-gray-400 mb-8">
+                Explore and filter the leading global platforms. The landscape is dominated by VC-backed companies targeting high-revenue enterprise clients, leaving a significant gap for SME-focused solutions.
+            </p>
+            
+            <div class="glass-effect p-6 rounded-lg mb-8 flex flex-wrap items-center justify-center gap-4">
+                <input type="text" id="searchInput" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full md:w-auto p-2.5" placeholder="Search by name...">
+                <select id="fundingFilter" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full md:w-auto p-2.5">
+                    <option value="all">All Funding Ranges</option>
+                    <option value="0-10">$0 - $10M</option>
+                    <option value="10-100">$10M - $100M</option>
+                    <option value="100+">$100M+</option>
+                </select>
+                <select id="aiFilter" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full md:w-auto p-2.5">
+                    <option value="all">All AI Usage</option>
+                    <option value="yes">Uses AI</option>
+                    <option value="no">No Mention of AI</option>
+                </select>
+                <select id="regionFilter" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full md:w-auto p-2.5">
+                    <option value="all">All Regions</option>
+                    <option value="USA">USA</option>
+                    <option value="Israel">Israel</option>
+                </select>
+                <div class="flex gap-2">
+                    <button id="downloadCsvBtn" class="btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">Download CSV</button>
+                    <button id="downloadPdfBtn" class="btn bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg">Download PDF</button>
+                </div>
+            </div>
+
+            <div id="competitorGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            </div>
+             <p id="noResults" class="text-center text-gray-400 py-8 hidden">No platforms match the current filters.</p>
+        </section>
+
+        <hr class="border-gray-700 my-16">
+
+        <section id="gap-analysis" class="py-12">
+            <h2 class="text-3xl font-bold text-center text-white mb-4">The GCC Opportunity: A Market Unserved</h2>
+            <p class="text-center max-w-3xl mx-auto text-gray-400 mb-12">
+                Global platforms operate on a "one-size-fits-all" model, failing to address the GCC's unique cultural, regulatory, and economic landscape. This creates a clear, defensible opportunity for a regionally-focused solution.
+            </p>
+
+            <div class="space-y-8">
+                <div class="glass-effect p-8 rounded-lg flex flex-col md:flex-row items-center gap-8">
+                    <div class="text-blue-400 text-5xl">⚠️</div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-white">The Gap: Cultural & Regulatory Blind Spots</h3>
+                        <p class="text-gray-400 mt-2">Global platforms lack the tools for culturally-sensitive content analysis and automated compliance with mandatory local regulations (e.g., UAE influencer licenses). This exposes brands to significant campaign failure and legal risk.</p>
+                    </div>
+                </div>
+                <div class="glass-effect p-8 rounded-lg flex flex-col md:flex-row items-center gap-8">
+                    <div class="text-blue-400 text-5xl">🎯</div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-white">The Opportunity: Localization-as-a-Service</h3>
+                        <p class="text-gray-400 mt-2">A new platform can provide immense value by offering an AI-powered "Cultural Resonance Score" for influencers and automating regulatory checks. This transforms a manual, high-risk process into a core, automated feature, creating a strong competitive moat.</p>
+                    </div>
+                </div>
+                 <div class="glass-effect p-8 rounded-lg flex flex-col md:flex-row items-center gap-8">
+                    <div class="text-blue-400 text-5xl">💰</div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-white">The Gap: Inaccessible Pricing for SMEs</h3>
+                        <p class="text-gray-400 mt-2">Leading platforms have high-cost, inflexible pricing models (e.g., GRIN at $25k+/year) that are prohibitive for the GCC's large and growing SME market.</p>
+                    </div>
+                </div>
+                <div class="glass-effect p-8 rounded-lg flex flex-col md:flex-row items-center gap-8">
+                    <div class="text-blue-400 text-5xl">📈</div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-white">The Opportunity: Flexible, Regional Pricing</h3>
+                        <p class="text-gray-400 mt-2">A tiered, flexible pricing model tailored to regional SMEs can capture a vast, underserved market segment, offering powerful tools at an accessible price point.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="border-gray-700 my-16">
+
+        <section id="blueprint" class="py-12">
+            <h2 class="text-3xl font-bold text-center text-white mb-4">Blueprint for a Next-Gen GCC Platform</h2>
+            <p class="text-center max-w-3xl mx-auto text-gray-400 mb-12">
+                The vision is a "Culturally Intelligent Marketing Hub" that solves the GCC's core pain points through a combination of AI-powered regional expertise, automated compliance, and an accessible business model.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="glass-effect p-6 rounded-lg text-center">
+                    <div class="text-4xl mb-4">🧠</div>
+                    <h3 class="text-lg font-semibold text-white">Culturally-Fluent AI Engine</h3>
+                    <p class="text-sm text-gray-400 mt-2">Analyzes content for local nuance, humor, and cultural relevance, providing a "Resonance Score" to ensure authentic brand-creator matching.</p>
+                </div>
+                <div class="glass-effect p-6 rounded-lg text-center">
+                    <div class="text-4xl mb-4">🛡️</div>
+                    <h3 class="text-lg font-semibold text-white">Automated Compliance</h3>
+                    <p class="text-sm text-gray-400 mt-2">Integrates with government databases to automatically verify influencer licenses (UAE, KSA) and ensure proper ad disclosure, mitigating legal risks.</p>
+                </div>
+                <div class="glass-effect p-6 rounded-lg text-center">
+                    <div class="text-4xl mb-4">💳</div>
+                    <h3 class="text-lg font-semibold text-white">Localized Payments</h3>
+                    <p class="text-sm text-gray-400 mt-2">Multi-currency payment gateway with transparent, low fees, supporting local currencies and payment methods to streamline creator compensation.</p>
+                </div>
+                <div class="glass-effect p-6 rounded-lg text-center">
+                    <div class="text-4xl mb-4">📊</div>
+                    <h3 class="text-lg font-semibold text-white">Predictive ROI Analytics</h3>
+                    <p class="text-sm text-gray-400 mt-2">Moves beyond vanity metrics by integrating with e-commerce to provide tangible sales attribution and predictive performance analytics.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-900 mt-16">
+        <div class="container mx-auto px-8 py-4 text-center text-gray-500">
+            <p>This interactive report was generated based on the provided competitive analysis. All data is for illustrative purposes.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const competitorData = [
+                {
+                    name: "GRIN",
+                    year: 2014,
+                    hq: "Sacramento, USA",
+                    funding: 145,
+                    pricing: "Custom; starts at $25K/yr",
+                    features: "All-in-one workflow, e-commerce focus, creator-friendly experience.",
+                    ai: "yes",
+                    source: "https://www.grin.co/"
+                },
+                {
+                    name: "CreatorIQ",
+                    year: 2014,
+                    hq: "Los Angeles, USA",
+                    funding: 80,
+                    pricing: "Custom subscription",
+                    features: "Enterprise-focused, Creator CRM, first-party data integration.",
+                    ai: "yes",
+                    source: "https://creatoriq.com/"
+                },
+                {
+                    name: "HypeAuditor",
+                    year: 2017,
+                    hq: "Indianapolis, USA",
+                    funding: 5,
+                    pricing: "Tiered; starts at $10K/yr",
+                    features: "Market-leading fraud detection, proprietary AQS/CQS metrics.",
+                    ai: "yes",
+                    source: "https://hypeauditor.com/"
+                },
+                {
+                    name: "Aspire",
+                    year: 2014,
+                    hq: "San Francisco, USA",
+                    funding: 15,
+                    pricing: "Custom; starts at ~$6K/yr",
+                    features: "Social commerce & community focus, trackable ROI, affiliate tools.",
+                    ai: "yes",
+                    source: "https://www.aspire.io/"
+                },
+                {
+                    name: "Klear",
+                    year: 2012,
+                    hq: "Tel Aviv, Israel",
+                    funding: 2.15,
+                    pricing: "Custom quote",
+                    features: "Part of Meltwater. Social listening, competitive research, brand safety.",
+                    ai: "yes",
+                    source: "https://klear.com/"
+                },
+                {
+                    name: "Upfluence",
+                    year: 2013,
+                    hq: "San Francisco, USA",
+                    funding: 9.4,
+                    pricing: "Tiered; starts at ~$15K/yr",
+                    features: "Data-rich discovery, 'Live Capture' feature, all-in-one platform.",
+                    ai: "yes",
+                    source: "https://www.upfluence.com/"
+                }
+            ];
+
+            const searchInput = document.getElementById('searchInput');
+            const fundingFilter = document.getElementById('fundingFilter');
+            const aiFilter = document.getElementById('aiFilter');
+            const regionFilter = document.getElementById('regionFilter');
+            const competitorGrid = document.getElementById('competitorGrid');
+            const noResults = document.getElementById('noResults');
+
+            function renderCompetitors(filteredData) {
+                competitorGrid.innerHTML = '';
+                if (filteredData.length === 0) {
+                    noResults.classList.remove('hidden');
+                } else {
+                    noResults.classList.add('hidden');
+                }
+                filteredData.forEach(comp => {
+                    const hqRegion = comp.hq.split(', ')[1];
+                    const card = `
+                        <div class="competitor-card glass-effect p-6 rounded-lg transition-shadow duration-300 hover:shadow-lg hover:shadow-blue-500/20" data-name="${comp.name.toLowerCase()}" data-funding="${comp.funding}" data-ai="${comp.ai}" data-region="${hqRegion}">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-xl font-bold text-white">${comp.name}</h3>
+                                <span class="text-sm text-gray-400">${comp.year}</span>
+                            </div>
+                            <p class="text-sm text-gray-500 mb-4">${comp.hq}</p>
+                            <div class="space-y-3 text-sm">
+                                <p><strong class="font-medium text-gray-300">Funding:</strong> ~$${comp.funding}M</p>
+                                <p><strong class="font-medium text-gray-300">Pricing:</strong> ${comp.pricing}</p>
+                                <p><strong class="font-medium text-gray-300">Key Features:</strong> ${comp.features}</p>
+                                <p><strong class="font-medium text-gray-300">AI Usage:</strong> <span class="${comp.ai === 'yes' ? 'text-green-400' : 'text-red-400'}">${comp.ai === 'yes' ? 'Yes' : 'No'}</span></p>
+                            </div>
+                            <div class="mt-4">
+                                <a href="${comp.source}" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:text-blue-300 text-sm font-medium">Visit Website &rarr;</a>
+                            </div>
+                        </div>
+                    `;
+                    competitorGrid.innerHTML += card;
+                });
+            }
+
+            function filterData() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const fundingValue = fundingFilter.value;
+                const aiValue = aiFilter.value;
+                const regionValue = regionFilter.value;
+
+                const filtered = competitorData.filter(comp => {
+                    const nameMatch = comp.name.toLowerCase().includes(searchTerm);
+
+                    let fundingMatch = true;
+                    if (fundingValue !== 'all') {
+                        const [min, max] = fundingValue.split('-').map(Number);
+                        if (fundingValue.includes('+')) {
+                            fundingMatch = comp.funding >= 100;
+                        } else {
+                            fundingMatch = comp.funding >= min && comp.funding < max;
+                        }
+                    }
+                    
+                    const aiMatch = aiValue === 'all' || comp.ai === aiValue;
+                    const regionMatch = regionValue === 'all' || comp.hq.includes(regionValue);
+
+                    return nameMatch && fundingMatch && aiMatch && regionMatch;
+                });
+
+                renderCompetitors(filtered);
+            }
+            
+            searchInput.addEventListener('keyup', filterData);
+            fundingFilter.addEventListener('change', filterData);
+            aiFilter.addEventListener('change', filterData);
+            regionFilter.addEventListener('change', filterData);
+
+            renderCompetitors(competitorData);
+
+            const ctxSize = document.getElementById('marketSizeChart').getContext('2d');
+            new Chart(ctxSize, {
+                type: 'bar',
+                data: {
+                    labels: ['Source 1', 'Source 2', 'Source 3'],
+                    datasets: [{
+                        label: 'Market Size (USD Billions)',
+                        data: [20.24, 25.44, 8.92],
+                        backgroundColor: ['rgba(59, 130, 246, 0.7)', 'rgba(96, 165, 250, 0.7)', 'rgba(147, 197, 253, 0.7)'],
+                        borderColor: ['#3B82F6', '#60A5FA', '#93C5FD'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `$${context.raw} Billion`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { color: '#9CA3AF' }
+                        },
+                        x: {
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: { color: '#9CA3AF' }
+                        }
+                    }
+                }
+            });
+
+            const ctxShare = document.getElementById('marketShareChart').getContext('2d');
+            new Chart(ctxShare, {
+                type: 'doughnut',
+                data: {
+                    labels: ['North America', 'Europe', 'Asia-Pacific', 'Rest of World'],
+                    datasets: [{
+                        data: [39.5, 25, 20.5, 15],
+                        backgroundColor: ['#3B82F6', '#60A5FA', '#93C5FD', '#BFDBFE'],
+                        borderColor: '#1F2937',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { color: '#D1D5DB' }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.label}: ${context.raw}%`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            function downloadCSV() {
+                let csvContent = "data:text/csv;charset=utf-8,";
+                csvContent += "Name,Founding Year,HQ,Total Funding (M),Pricing Model,Key Features,AI Usage,Source\n";
+                
+                competitorData.forEach(row => {
+                    let values = [
+                        row.name,
+                        row.year,
+                        `"${row.hq}"`,
+                        row.funding,
+                        `"${row.pricing}"`,
+                        `"${row.features}"`,
+                        row.ai,
+                        row.source
+                    ];
+                    csvContent += values.join(",") + "\n";
+                });
+
+                const encodedUri = encodeURI(csvContent);
+                const link = document.createElement("a");
+                link.setAttribute("href", encodedUri);
+                link.setAttribute("download", "competitor_analysis.csv");
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+
+            document.getElementById('downloadCsvBtn').addEventListener('click', downloadCSV);
+
+            document.getElementById('downloadPdfBtn').addEventListener('click', () => {
+                const { jsPDF } = window.jspdf;
+                const content = document.getElementById('main-content');
+                const pdfButton = document.getElementById('downloadPdfBtn');
+                const csvButton = document.getElementById('downloadCsvBtn');
+                
+                pdfButton.innerText = 'Generating...';
+                pdfButton.disabled = true;
+                csvButton.disabled = true;
+
+                html2canvas(content, { 
+                    backgroundColor: '#111827',
+                    scale: 2
+                }).then(canvas => {
+                    const imgData = canvas.toDataURL('image/png');
+                    const pdf = new jsPDF('p', 'mm', 'a4');
+                    const pdfWidth = pdf.internal.pageSize.getWidth();
+                    const pdfHeight = pdf.internal.pageSize.getHeight();
+                    const canvasWidth = canvas.width;
+                    const canvasHeight = canvas.height;
+                    const ratio = canvasWidth / canvasHeight;
+                    const width = pdfWidth;
+                    const height = width / ratio;
+                    let position = 0;
+                    let heightLeft = height;
+
+                    pdf.addImage(imgData, 'PNG', 0, position, width, height);
+                    heightLeft -= pdfHeight;
+
+                    while (heightLeft > 0) {
+                        position = heightLeft - height;
+                        pdf.addPage();
+                        pdf.addImage(imgData, 'PNG', 0, position, width, height);
+                        heightLeft -= pdfHeight;
+                    }
+                    
+                    pdf.save('competitor_analysis.pdf');
+                    pdfButton.innerText = 'Download PDF';
+                    pdfButton.disabled = false;
+                    csvButton.disabled = false;
+                });
+            });
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section');
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 80) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>
