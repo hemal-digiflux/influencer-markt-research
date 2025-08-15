@@ -19,7 +19,7 @@
         - Competitor Data (Interactive Cards + Table, JS/HTML): Goal is to allow detailed comparison. Cards provide a quick overview, while filtering allows users to narrow down the dataset based on specific criteria (funding, AI, region). This is more dynamic and user-driven than a static table.
         - Gap Analysis (Styled Matrix, HTML/Tailwind): Goal is to clearly present the core "problem vs. opportunity" argument. A visually structured matrix with icons makes the information highly scannable and impactful.
         - Blueprint (Flexbox Diagram, HTML/Tailwind): Goal is to visualize the proposed platform's features. A diagrammatic layout is more engaging and easier to understand than a bulleted list.
-        - All choices are made to enhance understanding and interaction within the designed dashboard structure.
+        - All choices are made to enhance understanding and interaction within the designed dashboard structure. This update includes clickable links for the facts and stats, providing direct access to the source material.
     -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
@@ -64,6 +64,9 @@
         .btn:hover {
             transform: scale(1.05);
         }
+        .source-link {
+            @apply text-blue-400 hover:text-blue-300 transition-colors duration-200;
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -98,17 +101,17 @@
                 <div class="stat-card glass-effect p-6 rounded-lg text-center transition-transform duration-300">
                     <h3 class="text-4xl font-bold text-blue-400">$8.9B - $25.4B</h3>
                     <p class="text-gray-400 mt-2">2024 Market Size Range</p>
-                    <p class="text-xs text-gray-500 mt-1">Source: Multiple market reports [2, 5]</p>
+                    <p class="text-xs text-gray-500 mt-1">Source: <a href="https://influencermarketinghub.com/influencer-marketing-benchmark-report/" target="_blank" rel="noopener noreferrer" class="source-link">Influencer Marketing Hub</a>, <a href="https://www.statista.com/outlook/dmo/digital-advertising/social-media-advertising/influencer-marketing-platforms/worldwide#revenue" target="_blank" rel="noopener noreferrer" class="source-link">Statista</a></p>
                 </div>
                 <div class="stat-card glass-effect p-6 rounded-lg text-center transition-transform duration-300">
                     <h3 class="text-4xl font-bold text-blue-400">17% - 33%</h3>
                     <p class="text-gray-400 mt-2">Projected CAGR Range</p>
-                     <p class="text-xs text-gray-500 mt-1">Source: Multiple market reports [1, 2, 5]</p>
+                    <p class="text-xs text-gray-500 mt-1">Source: <a href="https://influencermarketinghub.com/influencer-marketing-benchmark-report/" target="_blank" rel="noopener noreferrer" class="source-link">Influencer Marketing Hub</a>, <a href="https://www.businesswire.com/news/home/20220601005886/en/Global-Influencer-Marketing-Platform-Market-Size-Share-Growth-Trend-Forecast-Report-2022-2028---ResearchAndMarkets.com" target="_blank" rel="noopener noreferrer" class="source-link">Business Wire</a></p>
                 </div>
                 <div class="stat-card glass-effect p-6 rounded-lg text-center transition-transform duration-300">
                     <h3 class="text-4xl font-bold text-blue-400">$95.69M</h3>
                     <p class="text-gray-400 mt-2">Projected Saudi Ad Spend by 2025</p>
-                    <p class="text-xs text-gray-500 mt-1">Source: Statista [44]</p>
+                    <p class="text-xs text-gray-500 mt-1">Source: <a href="https://www.statista.com/outlook/dmo/digital-advertising/social-media-advertising/influencer-marketing/saudi-arabia" target="_blank" rel="noopener noreferrer" class="source-link">Statista</a></p>
                 </div>
             </div>
 
